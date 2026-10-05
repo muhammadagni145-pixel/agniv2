@@ -26,7 +26,7 @@ const projects = [
     id: "003",
     title: "Voice-Controlled Smart Lamp.",
     stack: "ESP 32 / EFTTT / Google Assistant ",
-    description: "A smart lighting system that connects an ESP32 to a voice-controlled IoT setup. Voice commands are used to control the lamp remotely, demonstrating the integration of microcontrollers, wireless connectivity, and smart home automation.",
+    description: "A smart lighting system that connects an ESP32 to a voice-controlled IoT setup. Voice commands are used to control the lamp remotely, wireless connectivity, and smart home automation.",
     links: { live: "https://drive.google.com/drive/folders/15rkBBOGkPS5zer6I2BiqPCtJnhK9Yh2C", code: "#" },
     image: "./PROJECT 3.jpeg",
     cta: "View Project"

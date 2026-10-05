@@ -1,17 +1,20 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue, useScroll, useTransform } from "framer-motion";
 import { Instagram, Mail } from "lucide-react";
 import { FaTiktok, FaWhatsapp } from "react-icons/fa6";
+import MusicButton from "@/components/MusicButton";
+
 
 // Components
 import About from "./About";
-import SplashCursor from "@/components/SplashCursor";
+import LightRays from "../components/ui/LightRays";
 import SelectedWorks from "./SelectedWorks";
 import VectorBridge from "./VectorBridge";
 import Footer from "./Footer";
 import Contact from "./Contact";
 import Testimonial from "./Testimonial";
 import Navigation from "@/components/Navigation";
+import WarpText from "@/components/ui/WarpText";
 
 // --- Cursor Follower ---
 const CursorFollower = () => {
@@ -32,7 +35,7 @@ const CursorFollower = () => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 w-6 h-6 bg-gray-400/50 rounded-full pointer-events-none z-[9999] hidden lg:block backdrop-blur-[1px]"
+     className="fixed top-0 left-0 w-6 h-6 bg-white rounded-full pointer-events-none z-[9999] hidden lg:block mix-blend-difference"
       style={{ x, y }}
     />
   );
@@ -52,121 +55,117 @@ const AvailabilityBadge = () => (
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, ease: "easeOut" }}
-   className="absolute z-10 -translate-x-1/2 hidden md:flex items-center gap-2 pointer-events-none"
-style={{ top: "2.25rem", left: "calc(50vw - 110px)" }}
+   className="absolute z-10 hidden md:flex items-center gap-2 pointer-events-none"
+style={{
+  bottom: "3.7rem",
+  left: "4.5rem",
+}}
   >
     <span className="relative flex h-1.5 w-1.5">
       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
       <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-400" />
     </span>
-    <span className="font-sans font-black text-[9px] tracking-[0.25em] uppercase text-white">
-      Available for work
+    <span className="font-sans font-black text-[12px] tracking-[0.25em] uppercase text-white">
+      OPEN TO WORK
     </span>
   </motion.div>
 );
 
-const SocialStrip = () => {
+const SocialStrip = ({ onMenuClick }: { onMenuClick: () => void }) => {
 const socials = [
   { label: "TikTok", href: "https://www.tiktok.com/@missthemoon" },
   { label: "WhatsApp", href: "https://wa.me/6281368058832" },
   { label: "Instagram", href: "https://www.instagram.com/4gniiiiiiii/" },
   { label: "Email", href: "mailto:muhammadagniii11@gmail.com" },
 ];
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="absolute z-20 hidden md:flex flex-col items-center"
-      style={{ right: "64px", top: "112px", bottom: "194px", justifyContent: "center", gap: "1rem" }}
-    >
-      <span className="w-[1px] h-8 bg-white/30 flex-shrink-0" />
-      {socials.map(({ label, href }) => (
-        <a
-          key={label}
-          href={href}
-          target={href.startsWith("mailto") ? "_self" : "_blank"}
-          rel="noopener noreferrer"
-          title={label}
-          className="group flex-shrink-0"
-          style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
-        >
-          <span className="font-sans font-black text-[10px] tracking-[0.22em] uppercase text-white group-hover:opacity-100 transition-opacity duration-300">
-            {label}
-          </span>
-        </a>
-      ))}
-      <span className="w-[1px] h-8 bg-white/30 flex-shrink-0" />
-    </motion.div>
-  );
-};
-
-const SpinningCTA = () => (
+ return (
   <motion.div
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-    className="absolute md:z-30 lg:z-10 hidden md:flex items-center justify-center"
-    style={{ bottom: "4rem", right: "4rem" }}
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, ease: "easeOut" }}
+    className="absolute z-20 hidden md:flex"
+style={{
+  left: "calc(40% - 160px)",
+  top: "28px",
+  transform: "translateX(-50%)",
+}}
   >
-    <style>{`
-      @keyframes ctaSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      .cta-ring { animation: ctaSpin var(--cta-spin-duration, 10s) linear infinite; transform-origin: center; }
-      .cta-wrap:hover .cta-ring { --cta-spin-duration: 3s; }
-      .cta-wrap { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-      .cta-wrap:hover { transform: scale(1.08); }
-    `}</style>
-    <a href="#contact" className="cta-wrap group relative flex items-center justify-center w-[130px] h-[130px]" aria-label="Get in touch">
-      <svg viewBox="0 0 130 130" className="absolute inset-0 w-full h-full pointer-events-none">
-        <circle cx="65" cy="65" r="62" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" />
-      </svg>
-      <svg viewBox="0 0 130 130" className="cta-ring absolute inset-0 w-full h-full pointer-events-none">
-        <defs>
-          <path id="cta-circle-path" d="M65,65 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0" />
-        </defs>
-        <text fill="rgba(255,255,255,1)" fontSize="8.5" fontFamily="'Inter', sans-serif" fontWeight="900" letterSpacing="4">
-          <textPath href="#cta-circle-path">GET IN TOUCH · GET IN TOUCH · GET IN TOUCH ·&nbsp;</textPath>
-        </text>
-      </svg>
-      <span className="absolute inset-4 rounded-full bg-white scale-0 group-hover:scale-100 transition-transform duration-500 ease-in-out" style={{ transformOrigin: "center" }} />
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="relative z-10 w-6 h-6 text-white group-hover:text-black" style={{ transition: "color 0.3s ease" }}>
-        <path d="M7 17L17 7M17 7H7M17 7v10" />
-      </svg>
-    </a>
+    
   </motion.div>
 );
+};
+
+
 const MobileSocialStrip = () => {
   const socials = [
-    { label: "TikTok", icon: FaTiktok, href: "https://www.tiktok.com/@missthemoon" },
-    { label: "WhatsApp", icon: FaWhatsapp, href: "https://wa.me/6281368058832" },
-    { label: "Instagram", icon: Instagram, href: "https://www.instagram.com/4gniiiiiiii/" },
-    { label: "Email", icon: Mail, href: "mailto:muhammadagniii@gmail.com" },
+    {
+      label: "TikTok",
+      icon: FaTiktok,
+      href: "https://www.tiktok.com/@missthemoon",
+    },
+    {
+      label: "WhatsApp",
+      icon: FaWhatsapp,
+      href: "https://wa.me/6281368058832",
+    },
+    {
+      label: "Instagram",
+      icon: Instagram,
+      href: "https://www.instagram.com/4gniiiiiiii/",
+    },
+    {
+      label: "Email",
+      icon: Mail,
+      href: "mailto:muhammadagniii@gmail.com",
+    },
   ];
 
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
-      className="flex flex-col items-center gap-6"
+      transition={{
+        duration: 0.7,
+        delay: 0.6,
+        ease: "easeOut",
+      }}
+      className="
+        relative
+        z-[50]
+        flex
+        flex-col
+        items-center
+        gap-8
+        pointer-events-auto
+      "
     >
       {socials.map(({ label, icon: Icon, href }) => (
         <a
           key={label}
           href={href}
-          target={href.startsWith("mailto") ? "_self" : "_blank"}
+          target={href.startsWith("mailto:") ? "_self" : "_blank"}
           rel="noopener noreferrer"
-          className="text-white hover:opacity-75 transition-opacity duration-300 block"
           aria-label={label}
+          className="
+            relative
+            z-[51]
+            block
+            cursor-pointer
+            pointer-events-auto
+            text-white
+            hover:opacity-75
+            transition-opacity
+            duration-300
+          "
         >
-          <Icon size={18} strokeWidth={2.5} />
+          <Icon size={19} strokeWidth={2} />
         </a>
       ))}
     </motion.div>
   );
 };
-
 const Index = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const footerContainerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: footerContainerRef,
@@ -178,68 +177,465 @@ const Index = () => {
 
   return (
     <div className="min-h-screen relative bg-black selection:bg-white selection:text-black">
-      <BrandLogo />
       <CursorFollower />
-      <Navigation />
+      <Navigation open={menuOpen} setOpen={setMenuOpen} />
 
       {/* Fixed background About section */}
       <div className="fixed inset-0 z-0 bg-white text-black">
-        <About />
-      </div>
+  <About />
+</div>
 
       {/* Hero */}
-      <section className="relative h-screen bg-black flex flex-col px-6 py-12 md:px-16 md:py-16 z-20 overflow-hidden">
+      <section 
+      className="relative h-screen bg-black flex flex-col px-6 py-12 md:px-16 md:py-16 z-20 overflow-hidden">
+        <div className="absolute inset-0 z-0 pointer-events-none">
+  <LightRays />
+</div>
         <AvailabilityBadge />
-        <SocialStrip />
-        <SpinningCTA />
-        <div className="hidden lg:block"><SplashCursor /></div>
+        
+        <SocialStrip onMenuClick={() => setMenuOpen(true)} />
+        
 
         {/* Mobile Midpoint Buffer: 80px total height from top to clear hamburger (Hamburger at 24px + 56px height) */}
         <div className="h-[32px] w-full md:hidden" /> {/* py-12 (48px) + 32px = 80px */}
 
         {/* Dynamic Centering Container for Mobile Socials */}
-        <div className="flex-1 flex flex-col items-end justify-center md:hidden pr-0 z-10 pointer-events-none">
-          <div className="pointer-events-auto">
-            <MobileSocialStrip />
-          </div>
-        </div>
-
-        <div className="z-10 mt-auto mb-6 md:mb-8 w-full">
-  <motion.div
-    initial={{ opacity: 0, y: 60 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-    className="w-full flex flex-col items-center"
-  >
-    <a
-      href="#contact"
-      className="group relative overflow-hidden border border-white/30 px-5 py-3 flex items-center gap-3 hover:border-white transition-colors duration-500 w-fit mb-6 md:hidden"
-    >
-      <span className="absolute inset-0 bg-white translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
-      <span className="relative font-sans font-black text-[10px] tracking-[0.25em] uppercase text-white group-hover:text-black transition-colors duration-300 z-10">
-        Get in touch
-      </span>
-      <svg
-        className="relative w-3 h-3 text-white group-hover:text-black transition-colors duration-300 z-10"
-        viewBox="0 0 12 12"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-      >
-        <path d="M1 6h10M6 1l5 5-5 5" />
-      </svg>
-    </a>
-
-    <h1 className="font-sans font-bold text-7xl md:text-8xl lg:text-[9rem] xl:text-[11rem] leading-[0.85] tracking-tighter text-white uppercase text-center">
-      Muhammad<br />Agni
-    </h1>
-
-    <p className="mt-8 max-w-2xl px-6 font-sans text-xs md:text-sm font-medium text-white leading-relaxed tracking-wide uppercase text-center">
-      Building practical solutions across electronics, IoT, and software engineering while turning ideas into real-world digital systems.
-    </p>
-  </motion.div>
+       <div className="flex-1 flex flex-col items-end justify-center md:hidden pr-0 relative z-30 pointer-events-none">
+ <div className="pointer-events-auto translate-x-[8px] -translate-y-[170px]">
+  <MobileSocialStrip />
 </div>
+</div>
+
+        <motion.div
+  initial={{ opacity: 0, y: 60 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{
+    duration: 0.8,
+    ease: [0.16, 1, 0.3, 1],
+  }}
+  className="w-full flex flex-col items-center"
+>
+
+  {/* NAMA */}
+
+<div
+  className="
+    absolute
+    left-[5%]
+    top-[22%]
+    md:left-[8.5%]
+    md:top-[54.5%]
+    -translate-y-1/2
+    z-10
+    text-left
+  "
+>
+  <p
+  className="
+    relative
+    left-[-0.3%]
+    md:left-0
+    font-sans
+    text-[17px]
+    md:text-[25px]
+    leading-none
+    font-light
+    tracking-[2px]
+    text-cyan-300
+  "
+>
+  Hello! I'm
+</p>
+
+ <div className="relative w-max translate-y-[1px]">
+<div className="relative w-max translate-y-[1px]">
+
+  {/* MOBILE NAME */}
+  <h1
+    className="
+      mt-2
+      font-sans
+      text-[65px]
+      leading-[70px]
+      font-semibold
+      tracking-[-0.025em]
+      text-transparent
+      uppercase
+      w-max
+      md:hidden
+    "
+  >
+    MUHAMMAD AGNI
+  </h1>
+
+  {/* DESKTOP NAME */}
+  <h1
+    className="
+      mt-2
+      hidden
+      md:block
+      font-sans
+      text-[60px]
+      leading-[60px]
+      font-semibold
+      tracking-[-0.025em]
+      text-transparent
+      uppercase
+      w-max
+    "
+  >
+    MUHAMMAD
+    <br />
+    AGNI
+  </h1>
+
+
+
+</div>
+
+  <div className="absolute left-0 top-0 w-full h-full pointer-events-auto">
+    <WarpText
+      text={"MUHAMMAD\nAGNI"}
+      color="#ffffff"
+      fontSize={60}
+      fontWeight={600}
+      letterSpacing="-0.025em"
+      lineHeight={1}
+      warpStrength={0}
+      warpScale={1.7}
+      pointerInfluence={0.9}
+      pointerStrength={0.38}
+      refraction={0.03}
+      ripple={true}
+      className="w-full h-full min-h-0"
+    />
+  </div>
+</div>
+</div>
+
+  {/* FOTO LO — TETAP DI TENGAH */}
+
+<div className="absolute left-1/2 bottom-0 -translate-x-1/2 z-10 pointer-events-none">
+  <img
+    src="/agni-profile.png"
+    alt="Muhammad Agni"
+    className="
+      h-[155vh]
+      w-auto
+      object-contain
+      object-bottom
+      origin-bottom
+      scale-[3.5]
+      md:scale-[1.25]
+      pointer-events-none
+    "
+  />
+</div>
+
+{/* ICE BLUE GLOW — BODY OUTLINE */}
+
+<div
+  className="
+    absolute
+    left-1/2
+    bottom-[-260px]
+    -translate-x-1/2
+    w-[500px]
+    h-[850px]
+    md:w-[700px]
+    md:h-[900px]
+    blur-[75px]
+    opacity-90
+    z-[1]
+    pointer-events-none
+  "
+  style={{
+    background:
+      "radial-gradient(ellipse 55% 55% at 50% 76%, rgba(96,165,250,0.95) 0%, rgba(59,130,246,0.82) 38%, rgba(34,211,238,0.65) 58%, rgba(30,64,175,0.28) 72%, transparent 82%)",
+  }}
+/>
+
+{/* AMBIENT GLOW — RIGHT CENTER */}
+
+<div
+  className="
+    absolute
+    right-[-160px]
+    top-1/2
+    -translate-y-1/2
+    w-[280px]
+    h-[360px]
+    rounded-full
+    blur-[85px]
+    opacity-100
+    z-[0]
+    pointer-events-none
+  "
+  style={{
+    background:
+      "radial-gradient(ellipse 55% 55% at 85% 50%, rgba(96,165,250,1) 0%, rgba(59,130,246,1) 45%, rgba(34,211,238,1) 65%, rgba(30,64,175,0.7) 78%, transparent 82%)",
+  }}
+/>
+
+<div
+  className="
+    absolute
+    right-[-160px]
+    top-1/2
+    -translate-y-1/2
+    w-[220px]
+    h-[300px]
+    rounded-full
+    blur-[55px]
+    opacity-100
+    z-[0]
+    pointer-events-none
+  "
+  style={{
+    background:
+      "radial-gradient(ellipse 55% 55% at 85% 50%, rgba(96,165,250,1) 0%, rgba(59,130,246,1) 50%, rgba(34,211,238,1) 72%, transparent 88%)",
+  }}
+/>
+
+<div
+  className="
+    absolute
+    right-[-160px]
+    top-1/2
+    -translate-y-1/2
+    w-[150px]
+    h-[220px]
+    rounded-full
+    blur-[30px]
+    opacity-100
+    z-[0]
+    pointer-events-none
+  "
+  style={{
+    background:
+      "radial-gradient(ellipse 55% 55% at 85% 50%, rgba(147,197,253,1) 0%, rgba(96,165,250,1) 50%, rgba(34,211,238,0.95) 75%, transparent 90%)",
+  }}
+/>
+
+{/* AMBIENT GLOW — TOP LEFT */}
+
+<div
+  className="
+    absolute
+    left-[-160px]
+    top-[-160px]
+    w-[460px]
+    h-[350px]
+    blur-[85px]
+    opacity-100
+    z-[0]
+    pointer-events-none
+  "
+  style={{
+    background:
+      "radial-gradient(ellipse 55% 55% at 15% 15%, rgba(147,197,253,1) 0%, rgba(96,165,250,1) 35%, rgba(59,130,246,1) 55%, rgba(34,211,238,1) 72%, rgba(30,64,175,0.85) 82%, transparent 90%)",
+  }}
+/>
+
+
+  {/* ROLE */}
+
+<div
+  className="
+    absolute
+    left-[5%]
+    top-[32%]
+    z-10
+    text-left
+    text-white
+
+    md:left-auto
+    md:right-[7%]
+    md:top-1/2
+    md:-translate-y-1/2
+  "
+>
+
+  <p
+  className="
+    relative
+    text-[17px]
+    md:text-[25px]
+    leading-none
+    font-light
+    tracking-[2px]
+    text-cyan-300
+    md:left-[50px]
+  "
+>
+  IoT & Web
+</p>
+
+  {/* ENGINEER ↔ DEVELOPER */}
+
+  <div className="relative mt-2 grid overflow-hidden">
+
+    {/* ENGINEER */}
+
+    <motion.div
+      initial={{ y: 0, opacity: 1 }}
+      animate={{
+        y: [0, 0, 0, -65, -65, 0],
+        opacity: [1, 1, 0.35, 0, 0, 1],
+      }}
+      transition={{
+        duration: 6,
+        times: [
+          0,
+          0.40,
+          0.46,
+          0.58,
+          0.85,
+          1,
+        ],
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+     className="
+  col-start-1
+  row-start-1
+  relative
+  left-0
+  md:left-12
+  top-[-10px]
+  md:top-0
+  w-[270px]
+  h-[60px]
+  md:w-[350px]
+  md:h-[60px]
+  lg:w-[430px]
+  lg:h-[60px]
+"
+    >
+      {/* MOBILE */}
+<div className="md:hidden absolute inset-0">
+  <WarpText
+    text="ENGINEER"
+    color="#f0edf2"
+    fontSize={40}
+    fontWeight={600}
+    letterSpacing="-0.025em"
+    lineHeight={1}
+    warpStrength={0}
+    warpScale={1}
+    pointerInfluence={0}
+    pointerStrength={0}
+    refraction={0.06}
+    ripple={false}
+    className="absolute inset-0 w-full h-full min-h-0"
+  />
+</div>
+
+{/* DESKTOP */}
+<div className="hidden md:block absolute inset-0">
+  <WarpText
+    text="ENGINEER"
+    color="#f0edf2"
+    fontSize={60}
+    fontWeight={600}
+    letterSpacing="-0.025em"
+    lineHeight={1}
+    warpStrength={0}
+    warpScale={1}
+    pointerInfluence={0}
+    pointerStrength={0}
+    refraction={0.04}
+    ripple={false}
+    className="absolute inset-0 w-full h-full min-h-0"
+  />
+</div>
+    </motion.div>
+
+    {/* DEVELOPER */}
+
+    <motion.div
+      initial={{ y: 65, opacity: 0 }}
+      animate={{
+        y: [65, 65, 0, 0, 0, 65],
+        opacity: [0, 0, 1, 1, 0.35, 0],
+      }}
+      transition={{
+        duration: 6,
+        times: [
+          0,
+          0.42,
+          0.58,
+          0.85,
+          0.90,
+          1,
+        ],
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+        className="
+  col-start-1
+  row-start-1
+  relative
+  left-0
+  md:left-12
+  top-[-10px]
+  md:top-0
+        
+        w-[270px]
+        h-[60px]
+        md:w-[350px]
+        md:h-[60px]
+        lg:w-[430px]
+        lg:h-[60px]
+      "
+    >
+      {/* MOBILE */}
+<div className="md:hidden absolute inset-0">
+  <WarpText
+    text="DEVELOPER"
+    color="#f0edf2"
+    fontSize={40}
+    fontWeight={600}
+    letterSpacing="-0.025em"
+    lineHeight={1}
+    warpStrength={0}
+    warpScale={1}
+    pointerInfluence={0}
+    pointerStrength={0}
+    refraction={0.06}
+    ripple={false}
+    className="absolute inset-0 w-full h-full min-h-0"
+  />
+</div>
+
+{/* DESKTOP */}
+<div className="hidden md:block absolute inset-0">
+  <WarpText
+    text="DEVELOPER"
+    color="#f0edf2"
+    fontSize={60}
+    fontWeight={600}
+    letterSpacing="-0.025em"
+    lineHeight={1}
+    warpStrength={0}
+    warpScale={1}
+    pointerInfluence={0}
+    pointerStrength={0}
+    refraction={0.04}
+    ripple={false}
+    className="absolute inset-0 w-full h-full min-h-0"
+  />
+</div>
+    </motion.div>
+
+  </div>
+
+</div>
+
+</motion.div>
       </section>
+
+      <MusicButton />
 
       {/* Content stack */}
       <div className="relative z-20 w-full bg-transparent">
